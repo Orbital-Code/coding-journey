@@ -1,0 +1,212 @@
+# Two Pointer Techniques - Complete Guide
+
+## 1. Squares of a Sorted Array
+
+**Problem:** Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+
+**Input:** nums = [-4,-1,0,3,10]  
+**Output:** [0,1,9,16,100]  
+**Explanation:** After squaring, the array becomes [16,1,0,9,100]. After sorting, it becomes [0,1,9,16,100].
+
+**Solution:**
+```python
+def sortedSquares(self, nums: List[int]) -> List[int]:
+    ans = [0]*len(nums)
+    f = 0
+    l = len(nums)-1
+    i = len(nums)-1
+    while f<=l:
+        print(f,l)
+        if nums[f]**2 > nums[l]**2:
+            ans[i]=nums[f]**2
+            f+=1
+            i-=1
+        elif nums[f]**2 < nums[l]**2:
+            ans[i]=nums[l]**2
+            l-=1
+            i-=1
+        else:
+            ans[i]=nums[f]**2
+            f+=1
+            i-=1
+    return ans
+```
+
+**Explanation:**
+In this question, we will try to find the max square and place it at last index of the ans array and reduce last by 1 and by this way we will create a sorted array with square values.
+
+## 2. Remove Duplicates from Sorted Array
+
+**Problem:** Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once.
+
+**Solution:**
+```python
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        i= 0
+        j = 1
+        while i<=j and j<len(nums):
+            if nums[i]==nums[j]:
+                j+=1
+            else:
+                nums[i+1]=nums[j]
+                i+=1
+        return i+1
+```
+
+**Explanation:**
+Is me hum i=0 and j=1 rakh kr loop chalaye ge jab tak i<=j k or j < n se toh hum try kre ge match krne ka dono index k elements ko agr wo equal hai to j ko increment kr do, agr diff hai toh usse i k next me daal dena hai isse uniques elemts ki arry tiyaar ho jai gi, 
+Or i +1 arr ka size bhi bta de ga.
+Plus 1 is liye kyu ki i index base no hoga toh total lengh k liye plus 1.
+
+## 3. Find the Closest Pair from Two Sorted Arrays
+
+**Problem:** Given two sorted arrays and a number x, find the pair whose sum is closest to x and the pair has an element from each array.
+
+**Input:** 
+```
+ar1[] = {1, 4, 5, 7}
+ar2[] = {10, 20, 30, 40}
+x = 32
+```
+**Output:** 1 and 30
+
+**Input:** 
+```
+ar1[] = {1, 4, 5, 7}
+ar2[] = {10, 20, 30, 40}
+x = 50
+```
+**Output:** 7 and 40
+
+**Algorithm:**
+1. Initialize a variable diff as infinite (Diff is used to store the difference between pair and x). We need to find the minimum diff.
+2. Initialize two index variables l and r in the given sorted array:
+   - Initialize first to the leftmost index in ar1: l = 0
+   - Initialize second the rightmost index in ar2: r = n-1
+3. Loop while l < length.ar1 and r >= 0:
+   - If abs(ar1[l] + ar2[r] - sum) < diff then update diff and result
+   - If (ar1[l] + ar2[r] < sum) then l++
+   - Else r--
+4. Print the result.
+
+## 4. Find Triplets with Zero Sum
+
+**Problem:** Given an array of size n, find if there exist any triplets in the array whose sum is equal to zero.
+
+**Input:** n = 5, arr[] = {0, -1, 2, -3, 1}  
+**Output:** 1  
+**Explanation:** 0, -1 and 1 forms a triplet with sum equal to 0.
+
+**Solution:**
+```python
+class Solution:
+    #Function to find triplets with zero sum.    
+    def findTriplets(self, arr, n):
+        #code here
+        arr.sort()
+        if arr[0]>0:
+            return False
+        for i in range(n):
+            l=i+1
+            r=n-1
+            x = arr[i]
+            while l<r:
+                if x+arr[l]+arr[r]==0:
+                    return True
+                elif x+arr[l]+arr[r]>0:
+                    r-=1
+                else:
+                    l+=1
+        return False
+```
+
+## 5. Count the Triplets
+
+**Problem:** Given an array of distinct integers. The task is to count all the triplets such that sum of two elements equals the third element.
+
+**Input:** 
+```
+N = 4 
+arr[] = {1, 5, 3, 2}
+```
+**Output:** 2  
+**Explanation:** There are 2 triplets: 1 + 2 = 3 and 3 + 2 = 5
+
+**Solution:**
+```python
+class Solution:
+    def countTriplet(self, arr, n):
+        arr.sort()
+        count=0
+        i=n-1
+        while i>=0:
+            l = 0
+            r = i-1
+            while l<r:
+                if arr[l]+arr[r]==arr[i]:
+                    count+=1
+                    l+=1
+                    r-=1
+                    
+                elif arr[l]+arr[r]<arr[i]:
+                    l+=1
+                else:
+                    r-=1
+            i-=1
+        return count
+```
+
+**Explanation:**
+We will start with taking i as the last index and taking two more pointers as l(left) and r(right) and we will check if sum of l+r is small than we will increment the l by 1 and if it is greater than we will decrease the r by 1. If it is equal than increase the count by 1 and return the count.
+
+## 6. Find All Four Sum Numbers
+
+**Problem:** Given an array A of size N, find all sets of four elements with given sum.
+
+**Input:**
+```
+N = 5, K = 3
+A[] = {0,0,2,1,1}
+```
+**Output:** 0 0 1 2 $  
+**Explanation:** Sum of 0, 0, 1, 2 is equal to K.
+
+**Example 2:**
+**Input:**
+```
+N = 7, K = 23
+A[] = {10,2,3,4,5,7,8}
+```
+**Output:** 2 3 8 10 $2 4 7 10 $3 5 7 8 $  
+**Explanation:** Sum of 2, 3, 8, 10 = 23, sum of 2, 4, 7, 10 = 23 and sum of 3, 5, 7, 8 = 23.
+
+**Solution:**
+```python
+class Solution:
+    def fourSum(self, A, X):
+        A.sort()
+        n= len(A)
+        ans=[]
+        for i in range(n - 3):
+            for j in range(i + 1, n - 2):
+                l = j + 1
+                r = n - 1
+                while (l < r):
+                    s = A[i] + A[j] + A[l] + A[r]
+                    if(s == X):
+                        ans+=[[A[i], A[j], A[l], A[r]]]
+                        l += 1
+                        r -= 1
+                     
+                    elif (s< X):
+                        l += 1
+                    else:
+                        r -= 1
+        set_list = list(set(map(tuple,ans)))
+        set_list.sort()
+        return set_list
+```
+
+**Explanation:**
+Rest is quite understandable only last is to remove duplicacy and return unique quadruple from the given array that sums up to the given number.
